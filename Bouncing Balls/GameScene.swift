@@ -8,38 +8,67 @@
 
 import SpriteKit
 
+
 class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
-        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Hello, World!";
-        myLabel.fontSize = 65;
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
         
-        self.addChild(myLabel)
+    
+        // add edges
+        let edge = SKNode()
+        edge.position = CGPointZero
+        edge.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
+        self.addChild(edge)
+        
+        
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
         
         for touch: AnyObject in touches {
-            let location = touch.locationInNode(self)
+            let ballLocation : CGPoint = touch.locationInNode(self)
+            var randomNumber = arc4random_uniform(3)
+            var ball : SKSpriteNode!
             
-            let sprite = SKSpriteNode(imageNamed:"Spaceship")
+            switch randomNumber {
+            case 0:
+                ball = SKSpriteNode(imageNamed: "SoccerBall")
+                ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width * 0.5)
+                ball.physicsBody?.restitution = 0.3
+                ball.physicsBody?.mass = 0.4
+                ball.physicsBody?.angularVelocity = 20.0
+            case 1:
+                ball = SKSpriteNode(imageNamed: "BeachBall")
+                ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width * 0.5)
+                ball.physicsBody?.restitution = 0.6
+                ball.physicsBody?.mass = 0.1
+                ball.physicsBody?.angularVelocity = 20.0
+            default:
+                ball = SKSpriteNode(imageNamed: "8Ball")
+                ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width * 0.5)
+                ball.physicsBody?.restitution = 0.0
+                ball.physicsBody?.mass = 0.8
+                ball.physicsBody?.angularVelocity = 20.0
+            }
             
-            sprite.xScale = 0.5
-            sprite.yScale = 0.5
-            sprite.position = location
+            ball.position = ballLocation
+            self.addChild(ball)
+
             
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-            
-            sprite.runAction(SKAction.repeatActionForever(action))
-            
-            self.addChild(sprite)
         }
     }
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+    }
+    
+    func createBalls (ballLocation : CGPoint) {
+        
+    
+        
+        
+        
+        
     }
 }
